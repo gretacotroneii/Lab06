@@ -63,7 +63,8 @@ class View:
         pulsante_conferma_responsabile = ft.Button("Conferma", on_click=self.controller.conferma_responsabile)
 
         # Altri Pulsanti da implementare (es. "Mostra" e "Cerca")
-        # TODO
+        pulsante_mostra=ft.Button("Mostra", on_click=self.controller.mostra_strumenti)
+        pulsante_cerca=ft.Button("Cerca", on_click=self.controller.cerca_strumenti_per_tipo)
 
         # --- LAYOUT ---
         self.page.add(
@@ -82,11 +83,26 @@ class View:
             ft.Divider(),
 
             # Sezione 3
-            # TODO
+            # Un controllo Text con testo "Strumenti".
+            # Un controllo Button "Mostra" per mostrare tutti gli strumenti presenti nel database.
+            # Un contenitore ListView da popolare con gli strumenti che vengono letti dal database.
+            ft.Text("Strumenti", size=20),
+            pulsante_mostra,
+            self.lista_strumenti,
+            ft.Divider(),
 
             # Sezione 4
-            # TODO
+            #Un controllo Text con testo "Cerca Strumento per Tipo".
+            #Un controlloTextField per inserire il tipo di strumento da cercare
+            #Un controllo Button "Cerca" per avviare la ricerca
+            #Un contenitore ListView da popolare con l'elenco degli strumenti trovati nel database dato il tipo inserito (nel database possono esserci più strumenti dello stesso tipo)
+            ft.Text("Cerca Strumenti per Tipo",size=30),
+            pulsante_cerca,
+            self.input_tipo_strumento,
+            self.lista_strumenti_ricerca,
         )
+        self.page.update()
+
 
     def cambia_tema(self, e):
         self.page.theme_mode = ft.ThemeMode.DARK if self.toggle_cambia_tema.value else ft.ThemeMode.LIGHT

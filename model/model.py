@@ -35,7 +35,29 @@ class DepositoStrumenti:
             Funzione che legge tutti gli strumenti nel database
             :return: una lista con tutti gli strumenti presenti oppure None
         """
-        # TODO
+        cnx=get_connection()
+        lista=[]
+        if cnx is None:
+            print("Connessione al database fallita")
+            return None
+
+        #cosi posso fare riferimento alla tabella con gli strumenti
+        cursor=cnx.cursor(dictionary=True)    #cosi ogni riga estratta dal database è un dizionario le cui chiavi sono i nomi delle colonne del database
+        query="SELECT * FROM strumento"    #cosi leggo tutti gli strumenti
+
+        try:
+            cursor.execute(query)
+            for row in cursor:
+                #creo l'oggetto Strumento usando i dati della riga corrente nel database
+                strumento=Strumento(**row)  #è equivalente a scrivere ad esempio: Strumento(id=1, nome="Chitarra Classica", tipo="Corda", prezzo=150)
+                lista.append(strumento)
+            cursor.close()
+            cnx.close()
+        except Exception as e:
+            print('Errore durante la query:{e}')
+            lista=None
+        return lista
+
 
     def cerca_strumenti_per_tipo(self, tipo) -> list[Strumento] | None:
         """
@@ -43,4 +65,32 @@ class DepositoStrumenti:
             :param tipo: il tipo dello strumento (es. "Chitarra")
             :return: una lista con tutti gli strumenti del tipo indicato oppure None
         """
-        # TODO
+        cnx=get_connection()
+        lista_per_tipo=[]
+        if cnx is None:
+            print("Connessione al database fallita")
+            return None
+
+        cursor=cnx.cursor(dictionary=True)
+        query="SELECT * FROM strumento WHERE tipo=%s"     #in questo modo gli dico di selezionare i risultati dove la colonna tipo è uguale ad un certo valore
+
+        try:
+            cursor.execute(query, (tipo,))
+            for row in cursor:
+                strumento=Strumento(**row)
+                lista_per_tipo.append(strumento)
+            cursor.close()
+            cnx.close()
+        except Exception as e:
+            print('Errore durante la query:{e}')
+            lista_per_tipo=None
+        return lista_per_tipo
+
+
+
+
+
+
+
+
+
